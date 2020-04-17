@@ -19,7 +19,7 @@
 
   Drag and drop onto your camera, no configuration required!
   
-# Acknowledgements
+# Copyright
 
   NVIDIA FXAA 3.9 by TIMOTHY LOTTES
   
