@@ -22,9 +22,8 @@
 # Acknowledgements
 
   NVIDIA FXAA 3.9 by TIMOTHY LOTTES
-  ------------------------------------------------------------------------------
   COPYRIGHT (C) 2010, 2011 NVIDIA CORPORATION. ALL RIGHTS RESERVED.
-  ------------------------------------------------------------------------------
+
   TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THIS SOFTWARE IS PROVIDED 
   *AS IS* AND NVIDIA AND ITS SUPPLIERS DISCLAIM ALL WARRANTIES, EITHER EXPRESS 
   OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF 
