@@ -7,7 +7,10 @@ using UnityEngine;
 [AddComponentMenu( "Image Effects/FXAA" )]
 public class FXAA : MonoBehaviour
 {
+	//Disabling the warning of uninitialized variable. This shader file is loaded via serialization where its GUID is set over FXAA.cs.meta
+#pragma warning disable CS0649
 	[SerializeField] private Shader shader;
+#pragma warning restore CS0649
 	private Material mat;
 
 	void CreateMaterialIfNeeded()
