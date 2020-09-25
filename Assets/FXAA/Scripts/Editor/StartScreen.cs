@@ -48,7 +48,7 @@ namespace AseFxaa
 		private static readonly GUIContent TitleSTR = new GUIContent( "FXAA" );
 
 		public const byte Major = 1;
-		public const byte Minor = 3;
+		public const byte Minor = 4;
 		public const byte Release = 0;
 
 		public static int FullNumber { get { return Major * 100 + Minor * 10 + Release; } }
