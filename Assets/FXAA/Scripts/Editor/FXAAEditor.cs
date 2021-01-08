@@ -84,7 +84,8 @@ public class FXAAEditor : Editor
 	private BannerInfo m_info = new BannerInfo(
 		"http://amplify.pt/Banner/Banner_Fxaa.jpg",
 		"Like FXAA? Check out Amplify Shader Editor, award-winning node-based shader editor for Unity!",
-		"https://www.assetstore.unity3d.com/en/#!/content/68570?aid=1011lPwI&pubref=FXAA" );
+		StartScreen.URLS[0]
+		);
 
 	IEnumerator coroutine;
 #if UNITY_2017_4_OR_NEWER

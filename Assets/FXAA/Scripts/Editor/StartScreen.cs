@@ -26,7 +26,25 @@ namespace AseFxaa
 			window.Show();
 		}
 
-		private static readonly string RefID = "Ref_FXAA";
+		public static readonly string RefID = "Ref_FXAA";
+		public static readonly string[] Titles = {
+					"Amplify Shader Editor",
+					"Amplify Impostors",
+					"Amplify Occlusion",
+					"Amplify Color",
+					"Amplify LUT Pack",
+					"Fake Interiors FREE",
+					"FXAA",
+				};
+		public static readonly string[] URLS = {
+					"https://assetstore.unity.com/packages/tools/visual-scripting/amplify-shader-editor-68570?aid=1011lPwI&pubref=" + RefID,
+					"https://assetstore.unity.com/packages/tools/utilities/amplify-impostors-119877?aid=1011lPwI&pubref=" + RefID,
+					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-occlusion-56739?aid=1011lPwI&pubref=" + RefID,
+					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-color-1894?aid=1011lPwI&pubref=" + RefID,
+					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-lut-pack-50070?aid=1011lPwI&pubref=" + RefID,
+					"https://assetstore.unity.com/packages/vfx/shaders/fake-interiors-free-104029?aid=1011lPwI&pubref=" + RefID,
+					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/fxaa-fast-approximate-anti-aliasing-3590?aid=1011lPwI&pubref=" + RefID,
+				};
 
 		private static readonly string IconGUID = "992e7a9799e79944096ebec921a76306";
 		private static readonly string BannerGUID = "99c3b87eb537f0c4fa7d8479d8905ca5";
@@ -117,25 +135,8 @@ namespace AseFxaa
 
 			if( m_packageRef == null )
 			{
-				string[] titles = {
-					"Amplify Shader Editor",
-					"Amplify Impostors",
-					"Amplify Occlusion",
-					"Amplify Color",
-					"Amplify LUT Pack",
-					"Fake Interiors FREE",
-					"FXAA",
-				};
-				string[] urls = {
-					"https://assetstore.unity.com/packages/tools/visual-scripting/amplify-shader-editor-68570?aid=1011lPwI&pubref=" + RefID,
-					"https://assetstore.unity.com/packages/tools/utilities/amplify-impostors-119877?aid=1011lPwI&pubref=" + RefID,
-					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-occlusion-56739?aid=1011lPwI&pubref=" + RefID,
-					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-color-1894?aid=1011lPwI&pubref=" + RefID,
-					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/amplify-lut-pack-50070?aid=1011lPwI&pubref=" + RefID,
-					"https://assetstore.unity.com/packages/vfx/shaders/fake-interiors-free-104029?aid=1011lPwI&pubref=" + RefID,
-					"https://assetstore.unity.com/packages/vfx/shaders/fullscreen-camera-effects/fxaa-fast-approximate-anti-aliasing-3590?aid=1011lPwI&pubref=" + RefID,
-				};
-				m_packageRef = new PackageRef( titles, urls );
+
+				m_packageRef = new PackageRef( Titles, URLS );
 			}
 
 			if( Icon == null )
