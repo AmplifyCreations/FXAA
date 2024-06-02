@@ -66,7 +66,7 @@ namespace AseFxaa
 		private static readonly GUIContent TitleSTR = new GUIContent( "FXAA" );
 
 		public const byte Major = 1;
-		public const byte Minor = 4;
+		public const byte Minor = 5;
 		public const byte Release = 0;
 
 		public static int FullNumber { get { return Major * 100 + Minor * 10 + Release; } }
@@ -358,17 +358,18 @@ namespace AseFxaa
 			Repaint();
 		}
 
+		private static string SanitizeURL( string url )
+		{
+			return url.Replace( "http://", "https://" );
+		}
+
 		public delegate void SuccessCall( UnityWebRequest www );
 
 		public static IEnumerator StartRequest( string url, SuccessCall success = null )
 		{
-			using( var www = UnityWebRequest.Get( url ) )
+			using( var www = UnityWebRequest.Get( SanitizeURL( url ) ) )
 			{
-#if UNITY_2017_2_OR_NEWER
 				yield return www.SendWebRequest();
-#else
-				yield return www.Send();
-#endif
 
 				while( www.isDone == false )
 					yield return null;
@@ -380,13 +381,9 @@ namespace AseFxaa
 
 		public static IEnumerator StartTextureRequest( string url, SuccessCall success = null )
 		{
-			using( UnityWebRequest www = UnityWebRequestTexture.GetTexture( url ) )
+			using( UnityWebRequest www = UnityWebRequestTexture.GetTexture( SanitizeURL( url ) ) )
 			{
-#if UNITY_2017_2_OR_NEWER
 				yield return www.SendWebRequest();
-#else
-				yield return www.Send();
-#endif
 
 				while( www.isDone == false )
 					yield return null;

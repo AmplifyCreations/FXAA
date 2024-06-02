@@ -3,9 +3,8 @@ using System.Collections;
 using System;
 using UnityEditor;
 using AseFxaa;
-#if UNITY_2017_4_OR_NEWER
 using UnityEngine.Networking;
-#endif
+
 namespace AseFxaa
 {
 	internal class AboutAffiliate : EditorWindow
@@ -87,122 +86,6 @@ public class FXAAEditor : Editor
 		StartScreen.URLS[0]
 		);
 
-	IEnumerator coroutine;
-#if UNITY_2017_4_OR_NEWER
-	UnityWebRequest m_webRequest;
-	IEnumerator StartRequest( string url )
-	{
-		m_webRequest = UnityWebRequest.Get( url );
-		yield return m_webRequest.SendWebRequest();
-	}
-
-	IEnumerator StartImageRequest( string url )
-	{
-		m_webRequest = UnityWebRequestTexture.GetTexture( url );
-		yield return m_webRequest.SendWebRequest();
-	}
-
-	public void EditorUpdateFetchInfo()
-	{
-		UnityWebRequestAsyncOperation www = (UnityWebRequestAsyncOperation)coroutine.Current;
-		if( !coroutine.MoveNext() )
-		{
-			if( !www.isDone )
-			{
-				coroutine.MoveNext();
-			}
-			else
-			{
-				if( !m_webRequest.isNetworkError && !m_webRequest.isHttpError )
-				{
-					m_info = BannerInfo.CreateFromJSON( m_webRequest.downloadHandler.text );
-					this.Repaint();
-
-					EditorApplication.update += EditorUpdateFetchImage;
-					coroutine = StartImageRequest( m_info.imageURL );
-				}
-				EditorApplication.update -= EditorUpdateFetchInfo;
-			}
-		}
-	}
-
-	public void EditorUpdateFetchImage()
-	{
-		UnityWebRequestAsyncOperation www = (UnityWebRequestAsyncOperation)coroutine.Current;
-		if( !coroutine.MoveNext() )
-		{
-			if( !www.isDone )
-			{
-				coroutine.MoveNext();
-			}
-			else
-			{
-				if( !m_webRequest.isNetworkError && !m_webRequest.isHttpError )
-				{
-					Texture2D myTexture = ( (DownloadHandlerTexture)m_webRequest.downloadHandler ).texture;
-					m_fetchedImage = new Texture2D( myTexture.width, myTexture.height, TextureFormat.RGB24, false, true );
-					m_fetchedImage.SetPixels( myTexture.GetPixels() );
-					m_fetchedImage.Apply();
-					this.Repaint();
-				}
-				EditorApplication.update -= EditorUpdateFetchImage;
-			}
-		}
-	}
-#else
-		IEnumerator StartRequest( string url )
-	{
-		WWW www = new WWW( url );
-		yield return www;
-	}
-
-	public void EditorUpdateFetchInfo()
-	{
-		WWW www = (WWW)coroutine.Current;
-		if( !coroutine.MoveNext() )
-		{
-			if( !www.isDone )
-			{
-				coroutine.MoveNext();
-			}
-			else
-			{
-				if( string.IsNullOrEmpty( www.error ) )
-				{
-					m_info = BannerInfo.CreateFromJSON( www.text );
-					this.Repaint();
-
-					EditorApplication.update += EditorUpdateFetchImage;
-					coroutine = StartRequest( m_info.imageURL );
-				}
-				EditorApplication.update -= EditorUpdateFetchInfo;
-			}
-		}
-	}
-
-	public void EditorUpdateFetchImage()
-	{
-		WWW www = (WWW)coroutine.Current;
-		if( !coroutine.MoveNext() )
-		{
-			if( !www.isDone )
-			{
-				coroutine.MoveNext();
-			}
-			else
-			{
-				if( string.IsNullOrEmpty( www.error ) )
-				{
-					m_fetchedImage = new Texture2D( www.texture.width, www.texture.height, TextureFormat.RGB24, false, true );
-					m_fetchedImage.SetPixels( www.texture.GetPixels() );
-					m_fetchedImage.Apply();
-					this.Repaint();
-				}
-				EditorApplication.update -= EditorUpdateFetchImage;
-			}
-		}
-	}
-#endif
 	public override void OnInspectorGUI()
 	{
 		if( !m_initialized )
@@ -241,8 +124,21 @@ public class FXAAEditor : Editor
 			{
 				m_imageLoaded = true;
 
-				EditorApplication.update += EditorUpdateFetchInfo;
-				coroutine = StartRequest( m_jsonURL );
+				StartScreen.StartBackgroundTask( StartScreen.StartRequest( m_jsonURL, ( www ) =>
+				{
+					m_info = BannerInfo.CreateFromJSON( www.downloadHandler.text );
+					this.Repaint();
+
+					StartScreen.StartBackgroundTask( StartScreen.StartTextureRequest( m_info.imageURL, ( www2 ) =>
+					{
+						Texture2D texture = DownloadHandlerTexture.GetContent( www2 );
+						if ( texture != null )
+						{
+							m_fetchedImage = texture;
+							this.Repaint();
+						}
+					} ) );
+				} ) );
 			}
 		}
 
