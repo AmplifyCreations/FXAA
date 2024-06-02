@@ -15,7 +15,7 @@ Shader "Hidden/FXAA3"
 
 		struct v2f
 		{
-			float4 pos : POSITION;
+			float4 pos : SV_POSITION;
 			float2 uv : TEXCOORD0;
 			float4 uvAux : TEXCOORD1;
 		};
@@ -23,7 +23,7 @@ Shader "Hidden/FXAA3"
 		v2f vert( appdata_img v )
 		{
 			v2f o;
-			o.pos = UnityObjectToClipPos (v.vertex);
+			o.pos = UnityObjectToClipPos( v.vertex );
 			o.uv = v.texcoord.xy;
 			o.uvAux.xy = v.texcoord.xy + float2( -_MainTex_TexelSize.x, +_MainTex_TexelSize.y ) * 0.5f;
 			o.uvAux.zw = v.texcoord.xy + float2( +_MainTex_TexelSize.x, -_MainTex_TexelSize.y ) * 0.5f;
@@ -49,7 +49,7 @@ Shader "Hidden/FXAA3"
 				#define FXAA_EARLY_EXIT 0
 				#include "Fxaa3_9.cginc"
 
-				half4 frag( v2f i ) : COLOR
+				half4 frag( v2f i ) : SV_Target
 				{
 					return FxaaPixelShader_Quality( i.uv, i.uvAux, _MainTex, _rcpFrame.xy, _rcpFrameOpt );
 				}
